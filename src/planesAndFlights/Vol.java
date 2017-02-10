@@ -6,7 +6,7 @@ import airportComponents.Piste;
 import airportComponents.Porte;
 
 
-public class Vol {
+public class Vol implements Comparable<Vol>{
 	private Date date;
 	private boolean isDepart; 
 	private int nombrePassagers;
@@ -72,5 +72,10 @@ public class Vol {
 	
 	public void setPorte(Porte porte) {
 		this.porte = porte;
+	}
+
+	@Override
+	public int compareTo(Vol o) {
+		return date.compareTo(o.getDate());
 	}
 }
