@@ -1,5 +1,6 @@
 package planesAndFlights;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import airportComponents.Piste;
@@ -7,6 +8,7 @@ import airportComponents.Porte;
 
 
 public class Vol implements Comparable<Vol>{
+	private String nom;
 	private Date date;
 	private boolean isDepart; 
 	private int nombrePassagers;
@@ -14,11 +16,12 @@ public class Vol implements Comparable<Vol>{
 	private Piste piste;
 	private Porte porte;
 	
-	public Vol(Date date, boolean isDepart, int nombrePassagers, IAvion planeType){
-		this.date = date;
-		this.isDepart = isDepart;
-		this.nombrePassagers = nombrePassagers;
-		this.planeType = planeType;
+	public Vol(String nom){
+		this.setNom(nom);
+		this.date = Calendar.getInstance().getTime();
+		this.isDepart = true;
+		this.planeType = EnumAvion.A200;
+		this.nombrePassagers = planeType.getCapacitePassager();
 	}
 	
 	public Date getDate(){
@@ -41,7 +44,10 @@ public class Vol implements Comparable<Vol>{
 		return nombrePassagers;
 	}
 	
-	public void setNombrePassagers(int nombrePassagers) {
+	public void setNombrePassagers(int nombrePassagers) throws Exception {
+		if(nombrePassagers>planeType.getCapacitePassager()){
+			throw new Exception("Le nombre de passagers ne peut pas etre superieur a la capacite de l'avion : "+planeType.getCapacitePassager());
+		}
 		this.nombrePassagers = nombrePassagers;
 	}
 	
@@ -51,6 +57,9 @@ public class Vol implements Comparable<Vol>{
 	
 	public void setPlaneType(IAvion planeType) {
 		this.planeType = planeType;
+		if(nombrePassagers > planeType.getCapacitePassager()){
+			nombrePassagers = planeType.getCapacitePassager();
+		}
 	}
 	
 	public void affect(Piste piste, Porte porte){
@@ -77,5 +86,13 @@ public class Vol implements Comparable<Vol>{
 	@Override
 	public int compareTo(Vol o) {
 		return date.compareTo(o.getDate());
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 }
