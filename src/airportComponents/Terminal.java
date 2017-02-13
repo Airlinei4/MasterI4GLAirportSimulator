@@ -2,7 +2,13 @@ package airportComponents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import SystemeGestion.BoutonAjout;
 
 
 public class Terminal extends Structure {
@@ -47,8 +53,8 @@ public class Terminal extends Structure {
 	}
 
 	@Override
-	public Map<String, String> getAttributesList() {
-		Map<String, String> myMap = new HashMap<String, String>();
+	public LinkedHashMap<String, String> getAttributesList() {
+		LinkedHashMap<String, String> myMap = super.getAttributesList();
 		myMap.put("Nom", "String");
 		myMap.put("Nombre max de passagers", "int");
 		myMap.put("Portes d'embarquement", "List Porte");
@@ -83,5 +89,13 @@ public class Terminal extends Structure {
 		}
 	}
 	
-	
+	@Override
+	public JPanel getDisplay(){
+		displayComponent = new JPanel();
+		JButton button = new JButton(this.getName());
+		button.addMouseListener(this);
+		displayComponent.add(button);
+		displayComponent.add(new BoutonAjout("Porte","Ajouter une porte d'embarquement",myporte,displayComponent));
+		return displayComponent;
+	}
 }

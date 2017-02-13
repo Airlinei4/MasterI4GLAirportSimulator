@@ -2,8 +2,12 @@ package airportComponents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.swing.JButton;
+
+import Forms.Formulaire;
 import planesAndFlights.IAvion;
 
 public class Piste extends PlaneReceiver {
@@ -14,15 +18,21 @@ public class Piste extends PlaneReceiver {
 	
 	public Piste(String name){
 		super(name);
+		Formulaire formPiste = new Formulaire(getAttributesList());
+		try {
+			setAttributesList(formPiste.getData());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		largeurMaximale = 30;
 		poidsMaximal = 500;
 		isDecollage = false;
 	}
 	
 	@Override
-	public Map<String, String> getAttributesList(){
-		Map<String, String> myMap = new HashMap<String, String>();
-		myMap.put("Nom", "String");
+	public LinkedHashMap<String, String> getAttributesList(){
+		LinkedHashMap<String, String> myMap = super.getAttributesList();
 		myMap.put("Largeur maximale", "int");
 		myMap.put("Poids maximal", "int");
 		myMap.put("Decollage ?", "boolean");
@@ -32,17 +42,13 @@ public class Piste extends PlaneReceiver {
 	
 	@Override
 	public void setAttributesList(ArrayList<Object> newList) throws Exception{
-		if(newList.size() != 5){
+		super.setAttributesList(newList);
+		if(newList.size() != 4){
 			throw new Exception("Nombre incorrect d'arguments dans la liste de la piste");
 		}
-		if(newList.get(0) instanceof String){
-			setName((String) newList.get(0));
-		}else{
-			throw new Exception("name in list isn't String");
-		}
 		
-		if(newList.get(1) instanceof Integer){
-			int nb = (Integer) newList.get(1);
+		if(newList.get(0) instanceof Integer){
+			int nb = (Integer) newList.get(0);
 			if(nb<10){
 				throw new Exception("La largeur maximale ne peut etre inferieure a 10m");
 			}
@@ -51,8 +57,8 @@ public class Piste extends PlaneReceiver {
 			throw new Exception("La largeur maximale donnee n'est pas de type entier");
 		}
 		
-		if(newList.get(2) instanceof Integer){
-			int nb = (Integer) newList.get(2);
+		if(newList.get(1) instanceof Integer){
+			int nb = (Integer) newList.get(1);
 			if(nb<50){
 				throw new Exception("Le poids maximal ne peut etre inferieur a 50 tonnes");
 			}
@@ -61,16 +67,19 @@ public class Piste extends PlaneReceiver {
 			throw new Exception("Le poids maximal donnee n'est pas de type entier");
 		}
 		
-		if(newList.get(3) instanceof Boolean){
-			setDecollage((Boolean) newList.get(3));
+		if(newList.get(2) instanceof Boolean){
+			setDecollage((Boolean) newList.get(2));
 		}else{
 			throw new Exception("La reponse pour le decollage n'est pas de type Booleen");
 		}
 		
-		if(newList.get(4) instanceof ArrayList<?>){
-			setPlaneTypes((ArrayList<IAvion>) newList.get(4));
+		if(newList.get(3) instanceof ArrayList<?>){
+			setPlaneTypes((ArrayList<IAvion>) newList.get(3));
 		}else{
 			throw new Exception("La reponse pour le decollage n'est pas de type Booleen");
+		}
+		for(int i=0; i<4; i++){
+			newList.remove(i);
 		}
 	}
 	

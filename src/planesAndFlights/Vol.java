@@ -1,14 +1,17 @@
 package planesAndFlights;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import airportComponents.Piste;
 import airportComponents.Porte;
+import airportComponents.Structure;
 
 
-public class Vol implements Comparable<Vol>{
-	private String nom;
+public class Vol extends Structure implements Comparable<Vol>{
 	private Date date;
 	private boolean isDepart; 
 	private int nombrePassagers;
@@ -17,7 +20,7 @@ public class Vol implements Comparable<Vol>{
 	private Porte porte;
 	
 	public Vol(String nom){
-		this.setNom(nom);
+		super(nom);
 		this.date = Calendar.getInstance().getTime();
 		this.isDepart = true;
 		this.planeType = EnumAvion.A200;
@@ -88,11 +91,15 @@ public class Vol implements Comparable<Vol>{
 		return date.compareTo(o.getDate());
 	}
 
-	public String getNom() {
-		return nom;
+	@Override
+	public LinkedHashMap<String, String> getAttributesList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	@Override
+	public void setAttributesList(ArrayList<Object> newList) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

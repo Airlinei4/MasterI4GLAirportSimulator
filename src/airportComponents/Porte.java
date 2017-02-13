@@ -2,6 +2,7 @@ package airportComponents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import planesAndFlights.IAvion;
@@ -41,9 +42,8 @@ public class Porte extends PlaneReceiver {
 	}
 	
 	@Override
-	public Map<String, String> getAttributesList() {
-		Map<String, String> myMap = new HashMap<String, String>();
-		myMap.put("Nom", "String");
+	public LinkedHashMap<String, String> getAttributesList() {
+		LinkedHashMap<String, String> myMap = super.getAttributesList();
 		myMap.put("Largeur maximale", "int");
 		myMap.put("Types d'avion supportes", "List IAvion");
 		return myMap;

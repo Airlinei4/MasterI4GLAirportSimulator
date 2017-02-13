@@ -5,13 +5,14 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
+import SystemeGestion.Fenetre;
 import planesAndFlights.IAvion;
 
 public class ComboBoxAvion extends JComboBox<String> {
 	private ArrayList<IAvion> listAvion;
 	
-	public ComboBoxAvion(ArrayList<IAvion> listAvion){
-		this.listAvion = listAvion;
+	public ComboBoxAvion(){
+		listAvion = Fenetre.getAvions();
 		for(IAvion avion : listAvion){
 			addItem(avion.getNom());
 		}
