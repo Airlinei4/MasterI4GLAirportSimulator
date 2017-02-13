@@ -1,19 +1,21 @@
 package planesAndFlights;
 
+import SystemeGestion.Entite;
 
-public class CompagnieAerienne {
-	String nom;
+
+public class CompagnieAerienne extends Entite implements ICompagnie {
 	int nombreDeVol;
 	 	   
 	//Constructeur
-	public CompagnieAerienne(String nom){
-		this.nom = nom;
+	public CompagnieAerienne(String name){
+		super(name);
+		//this.nom = nom;
 		this.nombreDeVol = 6;
 
 	}
-
+	@Override
 	public String getNom(){
-		return this.nom;
+		return super.getName();
 	}
 
 	public int getNombreDeVol(){
@@ -22,8 +24,9 @@ public class CompagnieAerienne {
 
 
 	// Setter
+	@Override
 	public void setNom(String pNom){
-		nom = pNom;
+		super.setName(pNom);
 	}
 
 	public void setnombreDeVol(int pNombreDeVol){
