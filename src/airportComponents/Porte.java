@@ -1,25 +1,28 @@
 package airportComponents;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import planesAndFlights.IAvion;
 
 public class Porte extends PlaneReceiver {
-	private int largeurMax;
+	private int largeurMax = IAvion.largeurMinimale;
+	private boolean isOutConstructor = false;
 	
 	public Porte(String name){
 		super(name);
-		largeurMax = 30;
+		
+		isOutConstructor = true;
 	}
 	
 	public int getLargeurMax() {
 		return largeurMax;
 	}
 	
-	public void setLargeurMax(int largeurMax) {
+	public void setLargeurMax(int largeurMax) throws Exception {
+		if(largeurMax < IAvion.largeurMinimale){
+			throw new Exception("La largeur maximale ne peut etre inferieure a "+IAvion.largeurMinimale+" metres");
+		}
 		this.largeurMax = largeurMax;
 		ArrayList<IAvion> listPlanes = getPlaneTypes();
 		for(IAvion planeType : listPlanes){
@@ -43,7 +46,9 @@ public class Porte extends PlaneReceiver {
 	
 	@Override
 	public ArrayList<Object> getAttributesValues() {
-		// TODO Auto-generated method stub
+		if(!isOutConstructor){
+			largeurMax = IAvion.largeurMinimale;
+		}
 		ArrayList<Object> listObject = super.getAttributesValues();
 		listObject.add(largeurMax);
 		listObject.add(getPlaneTypes());
@@ -70,11 +75,7 @@ public class Porte extends PlaneReceiver {
 		}
 		
 		if(newList.get(1) instanceof Integer){
-			int nb = (Integer) newList.get(1);
-			if(nb<10){
-				throw new Exception("La largeur maximale ne peut etre inferieure a 10m");
-			}
-			setLargeurMax(nb);
+			setLargeurMax((Integer) newList.get(1));
 		}else{
 			throw new Exception("La largeur maximale donnee n'est pas de type entier");
 		}

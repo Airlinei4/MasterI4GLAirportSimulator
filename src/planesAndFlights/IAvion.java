@@ -1,6 +1,11 @@
 package planesAndFlights;
 
 public interface IAvion {
+	int largeurMinimale = 25;
+	int hauteurMinimale = 10;
+	int longueurMinimale = 30;
+	int poidsMinimal = 50;
+	int capaciteMinimale = 50;
 	/// Getter
 		public String getNom();
 		public int getCapacitePassager();
@@ -11,11 +16,11 @@ public interface IAvion {
 	 
 	// Setter
 		public void setNom(String pNom);
-		public void setcapacitePassager(int pCapacitePassager);
-		public void setPoids(int pPoids);
-		public void setLargeur(int pLargeur);
-		public void setHauteur(int pHauteur);
-		public void setLongueur(int pLongueur);
+		public void setcapacitePassager(int pCapacitePassager) throws Exception;
+		public void setPoids(int pPoids) throws Exception;
+		public void setLargeur(int pLargeur)throws Exception;
+		public void setHauteur(int pHauteur)throws Exception;
+		public void setLongueur(int pLongueur)throws Exception;
 
 	}
 

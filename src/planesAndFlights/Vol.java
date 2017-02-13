@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
+import SystemeGestion.Entite;
 import airportComponents.Piste;
 import airportComponents.Porte;
-import airportComponents.Structure;
 
 
-public class Vol extends Structure implements Comparable<Vol>{
+public class Vol extends Entite implements Comparable<Vol>{
 	private Date date;
 	private boolean isDepart; 
 	private int nombrePassagers;
@@ -93,13 +92,43 @@ public class Vol extends Structure implements Comparable<Vol>{
 
 	@Override
 	public LinkedHashMap<String, String> getAttributesList() {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedHashMap<String, String> mapAttributes = super.getAttributesList();
+		mapAttributes.put("Date", "Date");
+		mapAttributes.put("Depart", "boolean");
+		mapAttributes.put("Modele d'avion", "IAvion");
+		mapAttributes.put("Nombre de passagers", "int");
+		return mapAttributes;
 	}
 
 	@Override
 	public void setAttributesList(ArrayList<Object> newList) throws Exception {
-		// TODO Auto-generated method stub
+		super.setAttributesList(newList);
+		if(newList.size() < 4){
+			throw new Exception("Nombre incorrect d'arguments dans la liste du vol");
+		}
 		
+		if(newList.get(0) instanceof Date){
+			setDate((Date) newList.get(0));
+		}else{
+			throw new Exception("La date donnee n'est pas de type Date");
+		}
+		
+		if(newList.get(1) instanceof Boolean){
+			setDepart((boolean) newList.get(1));
+		}else{
+			throw new Exception("Le depart donne n'est pas de type booleen");
+		}
+		
+		if(newList.get(2) instanceof IAvion){
+			setPlaneType((IAvion) newList.get(2));
+		}else{
+			throw new Exception("Le modele d'avion donne n'est pas de type Avion");
+		}
+		
+		if(newList.get(3) instanceof Integer){
+			setNombrePassagers((int) newList.get(3));
+		}else{
+			throw new Exception("Le nombre de passagers donne n'est pas de type entier");
+		}
 	}
 }

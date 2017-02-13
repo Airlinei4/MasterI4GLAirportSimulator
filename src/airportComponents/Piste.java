@@ -1,31 +1,30 @@
 package airportComponents;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-import javax.swing.JButton;
-
-import Forms.Formulaire;
 import planesAndFlights.IAvion;
 
 public class Piste extends PlaneReceiver {
 	
-	private int largeurMaximale;
-	private int poidsMaximal;
-	private boolean isDecollage;
+	private int largeurMaximale = IAvion.largeurMinimale;
+	private int poidsMaximal = IAvion.poidsMinimal;
+	private boolean isDecollage = false;
+	private boolean isOutConstructor = false;
 	
 	public Piste(String name){
 		super(name);
-		largeurMaximale = 30;
-		poidsMaximal = 500;
-		isDecollage = false;
+		isOutConstructor = true;
 	}
 	
 	@Override
 	public LinkedHashMap<String, String> getAttributesList(){
 		LinkedHashMap<String, String> myMap = super.getAttributesList();
+		if(!isOutConstructor){
+			largeurMaximale = IAvion.largeurMinimale;
+			poidsMaximal = IAvion.poidsMinimal;
+			isDecollage = false;
+		}
 		myMap.put("Largeur maximale", "int");
 		myMap.put("Poids maximal", "int");
 		myMap.put("Decollage ?", "boolean");
@@ -90,7 +89,10 @@ public class Piste extends PlaneReceiver {
 		return largeurMaximale;
 	}
 	
-	public void setLargeurMaximale(int largeurMaximale) {
+	public void setLargeurMaximale(int largeurMaximale) throws Exception {
+		if(largeurMaximale < IAvion.largeurMinimale){
+			throw new Exception("La largeur de la piste ne peut etre inferieure a "+IAvion.largeurMinimale+" metres");
+		}
 		this.largeurMaximale = largeurMaximale;
 		ArrayList<IAvion> listPlanes = getPlaneTypes();
 		for(IAvion planeType : listPlanes){
@@ -104,7 +106,10 @@ public class Piste extends PlaneReceiver {
 		return poidsMaximal;
 	}
 	
-	public void setPoidsMaximal(int poidsMaximal) {
+	public void setPoidsMaximal(int poidsMaximal) throws Exception {
+		if(poidsMaximal < IAvion.poidsMinimal){
+			throw new Exception("Le poids supporte par la piste ne peut etre inferieur a "+IAvion.poidsMinimal+" tonnes");
+		}
 		this.poidsMaximal = poidsMaximal;
 		ArrayList<IAvion> listPlanes = getPlaneTypes();
 		for(IAvion planeType : listPlanes){

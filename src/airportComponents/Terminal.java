@@ -1,27 +1,29 @@
 package airportComponents;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import SystemeGestion.BoutonAjout;
+import planesAndFlights.IAvion;
 
 
 public class Terminal extends Structure {
 
-	private int nombreMaxPassagers;
-	private ArrayList<Porte> myporte;
+	private int nombreMaxPassagers = IAvion.capaciteMinimale;
+	private ArrayList<Porte> myporte = new ArrayList<Porte>();
+	private boolean isOutConstructor = false;
 	
 	public Terminal(String name){
 		super(name);
-		this.myporte = new ArrayList<Porte>();
+		isOutConstructor = true;
 	}
 	
-	public void setNombresPassagers(int passagers){
+	public void setNombresPassagers(int passagers) throws Exception{
+		if(passagers < IAvion.capaciteMinimale){
+			throw new Exception("La capacité maximale d'un terminal ne peut etre inferieure a "+IAvion.capaciteMinimale+" personnes");
+		}
 		this.nombreMaxPassagers = passagers;
 	}
 	
@@ -55,7 +57,9 @@ public class Terminal extends Structure {
 	@Override
 	public LinkedHashMap<String, String> getAttributesList() {
 		LinkedHashMap<String, String> myMap = super.getAttributesList();
-		myMap.put("Nom", "String");
+		if(!isOutConstructor){
+			nombreMaxPassagers = IAvion.capaciteMinimale;
+		}
 		myMap.put("Nombre max de passagers", "int");
 		myMap.put("Portes d'embarquement", "List Porte");
 		return myMap;
@@ -82,11 +86,7 @@ public class Terminal extends Structure {
 		}
 		
 		if(newList.get(1) instanceof Integer){
-			int nb = (Integer) newList.get(1);
-			if(nb<50){
-				throw new Exception("La capacité maximale d'un terminal ne peut etre inferieure a 50 personnes");
-			}
-			setNombresPassagers(nb);
+			setNombresPassagers((Integer) newList.get(1));
 		}else{
 			throw new Exception("La capacité maximale du terminal donnee n'est pas de type entier");
 		}

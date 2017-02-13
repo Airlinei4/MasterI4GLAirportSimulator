@@ -1,25 +1,18 @@
 package Forms;
 
-import java.awt.Button;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Array;
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import SystemeGestion.Entite;
-import planesAndFlights.EnumAvion;
+import airportComponents.Porte;
 import planesAndFlights.IAvion;
 
 public class Formulaire extends JFrame implements ActionListener{
@@ -33,6 +26,7 @@ public class Formulaire extends JFrame implements ActionListener{
 	private ArrayList<Component> listFields;
 	private ComboBoxAvion comboBoxAv;
 	private ArrayList<IAvion> listAvions;
+	private ArrayList<Porte> listPortes;
 	private ComboBoxDepart comboBoxPiste;
 	private int position = 30;
 
@@ -51,7 +45,6 @@ public class Formulaire extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 
-		int i=0;
 		Set<Entry<String, String>> setList = listChamps.entrySet();
 		Iterator<Entry<String, String>> it = setList.iterator();
 		int indexValeurs = 0;
@@ -136,6 +129,27 @@ public class Formulaire extends JFrame implements ActionListener{
 				getContentPane().add(champEntier);
 				listFields.add(champEntier);
 			}
+			
+			else if(fieldName.getValue() == "List Porte"){
+				listPortes = new ArrayList<Porte>();
+				
+				lbl.add(new JLabel(fieldName.getKey()));
+				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
+				getContentPane().add(lbl.get(lbl.size()-1));
+				
+				JButton btnAdd = new JButton("+");
+				btnAdd.setBounds(300, position, 45, 20);
+				btnAdd.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						Porte porte = new Porte("Porte"+listPortes.size());
+						listPortes.add(porte);
+						//ajout au conteneur dans la fenêtre du terminal
+						position+=30;
+					}
+				});
+				getContentPane().add(btnAdd);
+				listFields.add(btnAdd);
+			}
 
 			// normale jTextField
 			else {
@@ -176,7 +190,10 @@ public class Formulaire extends JFrame implements ActionListener{
 						}
 					}else if(comp instanceof ChampEntier){
 						data.add(((ChampEntier) comp).getNumber());
-					}else{
+					}else if(comp instanceof JButton && listPortes != null){
+						data.add(listPortes);
+					}
+					else{
 						data.add(((JTextField) comp).getText());
 					}
 				}
