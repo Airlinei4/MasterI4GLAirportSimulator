@@ -42,6 +42,15 @@ public class Porte extends PlaneReceiver {
 	}
 	
 	@Override
+	public ArrayList<Object> getAttributesValues() {
+		// TODO Auto-generated method stub
+		ArrayList<Object> listObject = super.getAttributesValues();
+		listObject.add(largeurMax);
+		listObject.add(getPlaneTypes());
+		return listObject;
+	}
+	
+	@Override
 	public LinkedHashMap<String, String> getAttributesList() {
 		LinkedHashMap<String, String> myMap = super.getAttributesList();
 		myMap.put("Largeur maximale", "int");

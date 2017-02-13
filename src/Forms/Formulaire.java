@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import SystemeGestion.Entite;
 import planesAndFlights.EnumAvion;
 import planesAndFlights.IAvion;
 
@@ -32,14 +33,13 @@ public class Formulaire extends JFrame implements ActionListener{
 	private ArrayList<Component> listFields;
 	private ComboBoxAvion comboBoxAv;
 	private ArrayList<IAvion> listAvions;
-	private JComboBox comboBoxAv2 = new JComboBox();
 	private ComboBoxDepart comboBoxPiste;
 	private int position = 30;
 
 	private JFrame frame ;
 	private Entry<String, String> fieldName;
 
-	public Formulaire(Map<String, String> listChamps){
+	public Formulaire(Map<String, String> listChamps, ArrayList<Object> listeValeur, Entite objet){
 		JButton btnFinish = new JButton("Enregistrer");
 		listFields = new ArrayList<Component>();
 		
@@ -54,6 +54,7 @@ public class Formulaire extends JFrame implements ActionListener{
 		int i=0;
 		Set<Entry<String, String>> setList = listChamps.entrySet();
 		Iterator<Entry<String, String>> it = setList.iterator();
+		int indexValeurs = 0;
 
 		while (it.hasNext()){			
 
@@ -70,7 +71,6 @@ public class Formulaire extends JFrame implements ActionListener{
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
 				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
-				position+=30;
 			}
 
 			//ComboBox type iAvion
@@ -84,8 +84,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				comboBoxAv.addActionListener(this);
 				comboBoxAv.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxAv);
-				listFields.add(comboBoxAv);
-				position+=30;			
+				listFields.add(comboBoxAv);			
 			}
 			
 			else if (fieldName.getValue()== "List IAvion"){
@@ -131,13 +130,11 @@ public class Formulaire extends JFrame implements ActionListener{
 				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
-				ChampEntier champEntier = new ChampEntier();
+				ChampEntier champEntier = new ChampEntier((Integer) listeValeur.get(indexValeurs));
 				champEntier.setBounds(189, position, 86, 20);
 				champEntier.setColumns(10);
 				getContentPane().add(champEntier);
 				listFields.add(champEntier);
-
-				position+=30;
 			}
 
 			// normale jTextField
@@ -147,14 +144,14 @@ public class Formulaire extends JFrame implements ActionListener{
 				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
-				txtF.add(new JTextField());
+				txtF.add(new JTextField((String) listeValeur.get(indexValeurs)));
 				txtF.get(txtF.size()-1).setBounds(189, position, 86, 20);
 				txtF.get(txtF.size()-1).setColumns(10);
 				getContentPane().add(txtF.get(txtF.size()-1));
 				listFields.add(txtF.get(txtF.size()-1));
-
-				position+=30;
 			}
+			position+=30;
+			indexValeurs++;
 		
 		}
 		 
@@ -183,6 +180,14 @@ public class Formulaire extends JFrame implements ActionListener{
 						data.add(((JTextField) comp).getText());
 					}
 				}
+				
+				try {
+					objet.setAttributesList(data);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				dispose();
 				
 
 //				//Enregistrement iAvion selectionne
@@ -215,10 +220,6 @@ public class Formulaire extends JFrame implements ActionListener{
 		getContentPane().add(btnFinish);
 
 		this.setVisible(true);
-	}	
-
-	public ArrayList<Object> getData() {
-		return data;
 	}
 
 	@Override

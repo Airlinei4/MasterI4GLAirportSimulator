@@ -29,7 +29,7 @@ public abstract class PlaneReceiver extends Structure {
 	}
 	
 	protected ArrayList<IAvion> getPlaneTypes() {
-		return (ArrayList<IAvion>) planeTypes.clone();
+		return planeTypes;
 	}
 	
 	protected void setPlaneTypes(ArrayList<IAvion> planeTypes) throws Exception {

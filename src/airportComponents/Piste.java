@@ -18,15 +18,6 @@ public class Piste extends PlaneReceiver {
 	
 	public Piste(String name){
 		super(name);
-		Formulaire formPiste = new Formulaire(getAttributesList());
-		
-		try {
-			setAttributesList(formPiste.getData());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		formPiste.dispose();
 		largeurMaximale = 30;
 		poidsMaximal = 500;
 		isDecollage = false;
@@ -40,6 +31,16 @@ public class Piste extends PlaneReceiver {
 		myMap.put("Decollage ?", "boolean");
 		myMap.put("Types d'avion supportes", "List IAvion");
 		return myMap;
+	}
+	
+	@Override
+	public ArrayList<Object> getAttributesValues() {
+		ArrayList<Object> listValeurs = super.getAttributesValues();
+		listValeurs.add(largeurMaximale);
+		listValeurs.add(poidsMaximal);
+		listValeurs.add(isDecollage);
+		listValeurs.add(getPlaneTypes());
+		return listValeurs;
 	}
 	
 	@Override

@@ -60,6 +60,15 @@ public class Terminal extends Structure {
 		myMap.put("Portes d'embarquement", "List Porte");
 		return myMap;
 	}
+	
+	@Override
+	public ArrayList<Object> getAttributesValues() {
+		// TODO Auto-generated method stub
+		ArrayList<Object> listValeur = super.getAttributesValues();
+		listValeur.add(nombreMaxPassagers);
+		listValeur.add(myporte);
+		return listValeur;
+	}
 
 	@Override
 	public void setAttributesList(ArrayList<Object> newList) throws Exception {
