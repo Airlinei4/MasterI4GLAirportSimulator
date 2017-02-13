@@ -19,12 +19,14 @@ public class Piste extends PlaneReceiver {
 	public Piste(String name){
 		super(name);
 		Formulaire formPiste = new Formulaire(getAttributesList());
+		
 		try {
 			setAttributesList(formPiste.getData());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		formPiste.dispose();
 		largeurMaximale = 30;
 		poidsMaximal = 500;
 		isDecollage = false;

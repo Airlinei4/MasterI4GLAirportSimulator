@@ -1,6 +1,7 @@
 package Forms;
 
 import java.awt.Button;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -28,10 +29,11 @@ public class Formulaire extends JFrame implements ActionListener{
 	//private ArrayList<JLabel> 
 	private ArrayList <JTextField> txtF = new ArrayList<JTextField>() ;
 	private ArrayList<Object> data;
-	private IAvion [] iAv; 
+	private ArrayList<Component> listFields;
 	private ComboBoxAvion comboBoxAv;
+	private ArrayList<IAvion> listAvions;
 	private JComboBox comboBoxAv2 = new JComboBox();
-	private JComboBox comboBoxPiste = new JComboBox();
+	private ComboBoxDepart comboBoxPiste;
 	private int position = 30;
 
 	private JFrame frame ;
@@ -39,6 +41,7 @@ public class Formulaire extends JFrame implements ActionListener{
 
 	public Formulaire(Map<String, String> listChamps){
 		JButton btnFinish = new JButton("Enregistrer");
+		listFields = new ArrayList<Component>();
 		
 
 		frame= new JFrame("Formulaire");
@@ -57,11 +60,11 @@ public class Formulaire extends JFrame implements ActionListener{
 			fieldName = it.next();
 			//comboBox type de piste
 			if(fieldName.getValue() == "boolean"){
-				String [] piste = {"Départ","Arrivée"};
-				comboBoxPiste = new JComboBox(piste);
+				comboBoxPiste = new ComboBoxDepart();
 				comboBoxPiste.addActionListener(this);
 				comboBoxPiste.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxPiste);
+				listFields.add(comboBoxPiste);
 
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
@@ -73,31 +76,29 @@ public class Formulaire extends JFrame implements ActionListener{
 			//ComboBox type iAvion
 			else if (fieldName.getValue()== "IAvion"){
 
-				
-				
-
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
-				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
 				comboBoxAv = new ComboBoxAvion();
 				comboBoxAv.addActionListener(this);
 				comboBoxAv.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxAv);
-				position+=30;
-				
+				listFields.add(comboBoxAv);
+				position+=30;			
 			}
+			
 			else if (fieldName.getValue()== "List IAvion"){
+				listAvions = new ArrayList<IAvion>();
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
-				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
 				comboBoxAv = new ComboBoxAvion();
 				comboBoxAv.addActionListener(this);
 				comboBoxAv.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxAv);
+				listFields.add(comboBoxAv);
 				position+=30;
 			
 				JButton btnAdd = new JButton("+");
@@ -106,24 +107,37 @@ public class Formulaire extends JFrame implements ActionListener{
 					public void actionPerformed(ActionEvent arg0) {
 
 						
-						String tFAvion1 = comboBoxAv.getSelectedItem().toString();
-						System.out.println("avion selectionné "+tFAvion1);
-						
-						lbl.add(new JLabel(tFAvion1));
-						lbl.get(lbl.size()-1).setBounds(10, position+50 , 152, 20);
-						System.out.println(lbl+ " : "+position);
-						getContentPane().add(lbl.get(lbl.size()-1));
-						
-						JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
-						lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
-						lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
-						getContentPane().add(lblTerminalsDeLaroport);
-						
-						position+=30;
-
+						IAvion tFAvion1 = comboBoxAv.getSelectedItem();
+						if(!listAvions.contains(tFAvion1)){
+							listAvions.add(tFAvion1);
+							lbl.add(new JLabel(tFAvion1.getNom()));
+							lbl.get(lbl.size()-1).setBounds(10, position+50 , 152, 20);
+							getContentPane().add(lbl.get(lbl.size()-1));
+							
+//							JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
+//							lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
+//							lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
+//							getContentPane().add(lblTerminalsDeLaroport);
+							
+							position+=30;
+						}
 					}
 				});
 				getContentPane().add(btnAdd);
+			}
+			else if(fieldName.getValue()== "int"){
+				lbl.add(new JLabel(fieldName.getKey()));
+				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
+				System.out.println(fieldName.getKey()+": "+position);
+				getContentPane().add(lbl.get(lbl.size()-1));
+
+				ChampEntier champEntier = new ChampEntier();
+				champEntier.setBounds(189, position, 86, 20);
+				champEntier.setColumns(10);
+				getContentPane().add(champEntier);
+				listFields.add(champEntier);
+
+				position+=30;
 			}
 
 			// normale jTextField
@@ -137,6 +151,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				txtF.get(txtF.size()-1).setBounds(189, position, 86, 20);
 				txtF.get(txtF.size()-1).setColumns(10);
 				getContentPane().add(txtF.get(txtF.size()-1));
+				listFields.add(txtF.get(txtF.size()-1));
 
 				position+=30;
 			}
@@ -151,31 +166,49 @@ public class Formulaire extends JFrame implements ActionListener{
 		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().setVisible(false);
-
-				//Enregistrement iAvion selectionne
-				String tFAvion = comboBoxAv.getSelectedItem().toString();
-				System.out.println("avion selectionné "+tFAvion);
-
-				//Enregistrement type d'avion boolPiste dans : true -> Depart ...
-				Boolean boolPiste;
-				String tFPiste = comboBoxPiste.getSelectedItem().toString();
-				System.out.println("Type de piste selectionné "+tFPiste);
-				if(tFPiste == "Depart")
-					boolPiste = true;
-				else
-					boolPiste = false;
-
-				//Enregistrement texte ecris
-				String [] txt = new String [txtF.size()];
-				for (int jj=0; jj< txtF.size(); jj++ ){
-					txt[jj] = txtF.get(jj).getText();
-					System.out.println("txt écrit "+ txt[jj]);
+				data = new ArrayList<Object>();
+				
+				for(Component comp : listFields){
+					if(comp instanceof ComboBoxDepart){
+						data.add(((ComboBoxDepart) comp).getSelectedItem());
+					}else if (comp instanceof ComboBoxAvion){
+						if(listAvions != null){
+							data.add(listAvions);
+						}else{
+							data.add(((ComboBoxAvion) comp).getSelectedItem());
+						}
+					}else if(comp instanceof ChampEntier){
+						data.add(((ChampEntier) comp).getNumber());
+					}else{
+						data.add(((JTextField) comp).getText());
+					}
 				}
 				
-				JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
-				lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
-				lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
-				getContentPane().add(lblTerminalsDeLaroport);
+
+//				//Enregistrement iAvion selectionne
+//				String tFAvion = comboBoxAv.getSelectedItem().toString();
+//				System.out.println("avion selectionné "+tFAvion);
+//
+//				//Enregistrement type d'avion boolPiste dans : true -> Depart ...
+//				Boolean boolPiste;
+//				String tFPiste = comboBoxPiste.getSelectedItem().toString();
+//				System.out.println("Type de piste selectionné "+tFPiste);
+//				if(tFPiste == "Depart")
+//					boolPiste = true;
+//				else
+//					boolPiste = false;
+//
+//				//Enregistrement texte ecris
+//				String [] txt = new String [txtF.size()];
+//				for (int jj=0; jj< txtF.size(); jj++ ){
+//					txt[jj] = txtF.get(jj).getText();
+//					System.out.println("txt écrit "+ txt[jj]);
+//				}
+//				
+//				JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
+//				lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
+//				lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
+//				getContentPane().add(lblTerminalsDeLaroport);
 			}
 		});
 		btnFinish.setBounds(350, 300, 120, 50);
@@ -185,7 +218,6 @@ public class Formulaire extends JFrame implements ActionListener{
 	}	
 
 	public ArrayList<Object> getData() {
-		System.out.println(data);
 		return data;
 	}
 
