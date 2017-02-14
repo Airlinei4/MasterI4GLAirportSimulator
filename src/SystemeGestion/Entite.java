@@ -14,6 +14,7 @@ import Forms.Formulaire;
 public abstract class Entite  implements MouseListener{
 	private String name;
 	protected JPanel displayComponent;
+	private JButton button;
 
 	public Entite(String name) {
 		this.name = name;
@@ -54,11 +55,12 @@ public abstract class Entite  implements MouseListener{
 		}else{
 			throw new Exception("name in list isn't String");
 		}
+		button.setName(name);
 	}
 	
 	public JPanel getDisplay(){
 		displayComponent = new JPanel();
-		JButton button = new JButton(this.getName());
+		button = new JButton(this.getName());
 		button.addMouseListener(this);
 		displayComponent.add(button);
 		return displayComponent;

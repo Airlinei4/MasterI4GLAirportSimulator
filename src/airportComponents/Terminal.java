@@ -31,6 +31,10 @@ public class Terminal extends Structure {
 		this.nombreMaxPassagers = passagers;
 	}
 	
+	public ArrayList<Porte> getPortes(){
+		return myporte;
+	}
+	
 	public void ajouterPorte(Porte p){
 		this.myporte.add(p);//return boolean or launch exception if it's false
 	}

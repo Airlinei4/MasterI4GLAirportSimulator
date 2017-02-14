@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import airportComponents.Aeroport;
 import airportComponents.Piste;
+import airportComponents.Porte;
 import airportComponents.Terminal;
 import planesAndFlights.EnumAvion;
 import planesAndFlights.EnumVille;
@@ -21,6 +22,10 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -113,5 +118,58 @@ public class Fenetre extends JFrame implements ActionListener{
 		System.out.println("Nombre de pistes: "+aeroport.getPistes().size());
 		System.out.println("Nombre de terminaux: "+aeroport.getTerminaux().size());
 		System.out.println("Nombre de vols: "+Vols.size()+"\n");
-	}  
+	}
+	
+	public void simuler() throws Exception{
+		Collections.sort(Vols);
+		ArrayList<Date> dates = getEchellesDates();
+		int indexMin = 0;
+		for(Date date : dates){
+			int index = indexMin;
+			while(Vols.get(index).isAffected() || Vols.get(index).compatible(date)||Vols.get(index).isEnCours()){
+				Vol temp = Vols.get(index);
+				if(temp.isAffected()){
+					indexMin = index;
+				}else if (temp.isEnCours()) {
+					if(!temp.compatible(date)){
+						temp.affect(releasePiste(temp), releasePorte(temp));
+					}
+				}
+			}
+		}
+	}
+	
+	private Piste releasePiste(Vol vol) throws Exception{
+		Iterator<Piste> it = aeroport.getPistes().iterator();
+		while(it.hasNext()){
+			Piste piste = it.next();
+			if(piste.getVol() == vol){
+				piste.release(vol);
+				return piste;
+			}
+		}
+		return null;
+	}
+	
+	private Porte releasePorte(Vol vol) throws Exception{
+		for(Terminal term : aeroport.getTerminaux()){
+			for(Porte porte : term.getPortes()){
+				if(porte.getVol() == vol){
+					porte.release(vol);
+					return porte;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private ArrayList<Date> getEchellesDates(){
+		ArrayList<Date> dates = new ArrayList<Date>();
+		for(Vol vol : Vols){
+			if(!dates.contains(vol.getDateDebut())){
+				dates.add(vol.getDateDebut());
+			}
+		}
+		return dates;
+	}
 }
