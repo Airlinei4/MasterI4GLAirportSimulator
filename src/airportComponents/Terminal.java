@@ -51,12 +51,6 @@ public class Terminal extends Structure {
 		}
 		return false; 
 	}
-	
-	private void setMyporte(ArrayList<Porte> myporte) {
-		for(Porte porte : myporte){
-			ajouterPorte(porte);
-		}
-	}
 
 	@Override
 	public LinkedHashMap<String, String> getAttributesList() {
@@ -65,7 +59,6 @@ public class Terminal extends Structure {
 			nombreMaxPassagers = IAvion.capaciteMinimale;
 		}
 		myMap.put("Nombre max de passagers", "int");
-		myMap.put("Portes d'embarquement", "List Porte");
 		return myMap;
 	}
 	
@@ -74,31 +67,19 @@ public class Terminal extends Structure {
 		// TODO Auto-generated method stub
 		ArrayList<Object> listValeur = super.getAttributesValues();
 		listValeur.add(nombreMaxPassagers);
-		listValeur.add(myporte);
 		return listValeur;
 	}
 
 	@Override
 	public void setAttributesList(ArrayList<Object> newList) throws Exception {
-		if(newList.size() != 3){
+		super.setAttributesList(newList);
+		if(newList.size() < 1){
 			throw new Exception("Nombre incorrect d'arguments dans la liste du terminal");
 		}
-		if(newList.get(0) instanceof String){
-			setName((String) newList.get(0));
-		}else{
-			throw new Exception("name in list isn't String");
-		}
-		
-		if(newList.get(1) instanceof Integer){
-			setNombresPassagers((Integer) newList.get(1));
+		if(newList.get(0) instanceof Integer){
+			setNombresPassagers((Integer) newList.get(0));
 		}else{
 			throw new Exception("La capacité maximale du terminal donnee n'est pas de type entier");
-		}
-		
-		if(newList.get(2) instanceof ArrayList<?>){
-			setMyporte((ArrayList<Porte>) newList.get(2));
-		}else{
-			throw new Exception("La liste donnée ne contient pas de liste de portes");
 		}
 	}
 	

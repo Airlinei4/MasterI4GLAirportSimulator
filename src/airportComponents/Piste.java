@@ -20,11 +20,6 @@ public class Piste extends PlaneReceiver {
 	@Override
 	public LinkedHashMap<String, String> getAttributesList(){
 		LinkedHashMap<String, String> myMap = super.getAttributesList();
-		if(!isOutConstructor){
-			largeurMaximale = IAvion.largeurMinimale;
-			poidsMaximal = IAvion.poidsMinimal;
-			isDecollage = false;
-		}
 		myMap.put("Largeur maximale", "int");
 		myMap.put("Poids maximal", "int");
 		myMap.put("Decollage ?", "boolean");
@@ -34,6 +29,11 @@ public class Piste extends PlaneReceiver {
 	
 	@Override
 	public ArrayList<Object> getAttributesValues() {
+		if(!isOutConstructor){
+			largeurMaximale = IAvion.largeurMinimale;
+			poidsMaximal = IAvion.poidsMinimal;
+			isDecollage = false;
+		}
 		ArrayList<Object> listValeurs = super.getAttributesValues();
 		listValeurs.add(largeurMaximale);
 		listValeurs.add(poidsMaximal);

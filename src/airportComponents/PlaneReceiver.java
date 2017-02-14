@@ -1,6 +1,7 @@
 package airportComponents;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import planesAndFlights.IAvion;
 import planesAndFlights.Vol;
@@ -11,10 +12,23 @@ public abstract class PlaneReceiver extends Structure {
 	
 	private Vol vol;
 	
+	private boolean isOutConstructor;
+	
 	public PlaneReceiver(String name) {
 		super(name);
-		planeTypes = new ArrayList<IAvion>();
+		if(planeTypes == null){
+			planeTypes = new ArrayList<IAvion>();
+		}
 		vol = null;
+		isOutConstructor = true;
+	}
+	
+	@Override
+	public LinkedHashMap<String, String> getAttributesList() {
+		if(!isOutConstructor){
+			planeTypes = new ArrayList<IAvion>();
+		}
+		return super.getAttributesList();
 	}
 	
 	public Vol getVol() {
