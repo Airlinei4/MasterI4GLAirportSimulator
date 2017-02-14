@@ -6,6 +6,4 @@ public class AIMS {
 	Fenetre principale = new Fenetre();
   }
   
-  
-  
 }

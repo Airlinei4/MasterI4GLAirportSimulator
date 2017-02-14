@@ -6,10 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import SystemeGestion.Entite;
 import airportComponents.Porte;
@@ -18,7 +21,6 @@ import planesAndFlights.IAvion;
 public class Formulaire extends JFrame implements ActionListener{
 
 	private ArrayList <JLabel> lbl = new ArrayList<JLabel>();
-
 
 	//private ArrayList<JLabel> 
 	private ArrayList <JTextField> txtF = new ArrayList<JTextField>() ;
@@ -32,6 +34,9 @@ public class Formulaire extends JFrame implements ActionListener{
 
 	private JFrame frame ;
 	private Entry<String, String> fieldName;
+	private Border borderAvion = BorderFactory.createEmptyBorder(0,60,10,10);
+	private Box boxListeAvions = Box.createVerticalBox();
+	private JLabel lblListeAvions;
 
 	public Formulaire(Map<String, String> listChamps, ArrayList<Object> listeValeur, Entite objet){
 		JButton btnFinish = new JButton("Enregistrer");
@@ -43,7 +48,11 @@ public class Formulaire extends JFrame implements ActionListener{
 		this.setSize(500, 400);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-
+		
+		lblListeAvions = new JLabel("Liste des types d'avion:");
+		boxListeAvions.add(lblListeAvions);
+		getContentPane().add(boxListeAvions);
+		
 		Set<Entry<String, String>> setList = listChamps.entrySet();
 		Iterator<Entry<String, String>> it = setList.iterator();
 		int indexValeurs = 0;
@@ -105,10 +114,6 @@ public class Formulaire extends JFrame implements ActionListener{
 							lbl.get(lbl.size()-1).setBounds(10, position+50 , 152, 20);
 							getContentPane().add(lbl.get(lbl.size()-1));
 							
-//							JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
-//							lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
-//							lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
-//							getContentPane().add(lblTerminalsDeLaroport);
 							
 							position+=30;
 						}
@@ -180,10 +185,6 @@ public class Formulaire extends JFrame implements ActionListener{
 		}
 		 
 
-		
-
-		
-		
 		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().setVisible(false);
@@ -236,13 +237,9 @@ public class Formulaire extends JFrame implements ActionListener{
 //				String [] txt = new String [txtF.size()];
 //				for (int jj=0; jj< txtF.size(); jj++ ){
 //					txt[jj] = txtF.get(jj).getText();
-//					System.out.println("txt écrit "+ txt[jj]);
+//					System.out.println("txt ecrit "+ txt[jj]);
 //				}
 //				
-//				JLabel lblTerminalsDeLaroport = new JLabel("Terminals de l'a\u00E9roport");
-//				lblTerminalsDeLaroport.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 17));
-//				lblTerminalsDeLaroport.setBounds(10, position , 152, 20);
-//				getContentPane().add(lblTerminalsDeLaroport);
 			}
 		});
 		btnFinish.setBounds(350, 300, 120, 50);
