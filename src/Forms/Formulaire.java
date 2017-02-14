@@ -42,7 +42,6 @@ public class Formulaire extends JFrame implements ActionListener{
 		getContentPane().setLayout(null);
 		this.setSize(500, 400);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 
 		Set<Entry<String, String>> setList = listChamps.entrySet();
@@ -120,7 +119,6 @@ public class Formulaire extends JFrame implements ActionListener{
 			else if(fieldName.getValue()== "int"){
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
-				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
 				ChampEntier champEntier = new ChampEntier((Integer) listeValeur.get(indexValeurs));
@@ -150,6 +148,18 @@ public class Formulaire extends JFrame implements ActionListener{
 				getContentPane().add(btnAdd);
 				listFields.add(btnAdd);
 			}
+			
+			else if (fieldName.getValue() == "Date") {
+				lbl.add(new JLabel(fieldName.getKey()));
+				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
+				getContentPane().add(lbl.get(lbl.size()-1));
+				
+				ChampDate champDate = new ChampDate();
+				champDate.setLocation(189, position);
+//				champDate.setBounds(189, position, 86, 20);
+				getContentPane().add(champDate);
+				listFields.add(champDate);
+			}
 
 			// normale jTextField
 			else {
@@ -164,7 +174,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				getContentPane().add(txtF.get(txtF.size()-1));
 				listFields.add(txtF.get(txtF.size()-1));
 			}
-			position+=30;
+			position+=listFields.get(listFields.size()-1).getHeight()*1.5;
 			indexValeurs++;
 		
 		}
@@ -190,6 +200,8 @@ public class Formulaire extends JFrame implements ActionListener{
 						}
 					}else if(comp instanceof ChampEntier){
 						data.add(((ChampEntier) comp).getNumber());
+					}else if (comp instanceof ChampDate) {
+						data.add(((ChampDate) comp).getDate());
 					}else if(comp instanceof JButton && listPortes != null){
 						data.add(listPortes);
 					}

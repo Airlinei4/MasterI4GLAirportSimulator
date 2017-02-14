@@ -17,13 +17,11 @@ public class Vol extends Entite implements Comparable<Vol>{
 	private IAvion planeType;
 	private Piste piste;
 	private Porte porte;
+	private boolean isOutConstructor = false;
 	
 	public Vol(String nom){
 		super(nom);
-		this.date = Calendar.getInstance().getTime();
-		this.isDepart = true;
-		this.planeType = EnumAvion.A200;
-		this.nombrePassagers = planeType.getCapacitePassager();
+		isOutConstructor = true;
 	}
 	
 	public Date getDate(){
@@ -130,5 +128,21 @@ public class Vol extends Entite implements Comparable<Vol>{
 		}else{
 			throw new Exception("Le nombre de passagers donne n'est pas de type entier");
 		}
+	}
+	
+	@Override
+	public ArrayList<Object> getAttributesValues() {
+		if(!isOutConstructor){
+			date = Calendar.getInstance().getTime();
+			isDepart = true;
+			planeType = EnumAvion.A200;
+			nombrePassagers = planeType.getCapacitePassager();
+		}
+		ArrayList<Object> listValeurs = super.getAttributesValues();
+		listValeurs.add(date);
+		listValeurs.add(isDepart);
+		listValeurs.add(planeType);
+		listValeurs.add(nombrePassagers);
+		return listValeurs;
 	}
 }

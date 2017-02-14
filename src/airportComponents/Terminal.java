@@ -1,11 +1,15 @@
 package airportComponents;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import SystemeGestion.BoutonAjout;
+import SystemeGestion.WrapLayout;
 import planesAndFlights.IAvion;
 
 
@@ -100,11 +104,14 @@ public class Terminal extends Structure {
 	
 	@Override
 	public JPanel getDisplay(){
-		displayComponent = new JPanel();
+		displayComponent = new JPanel(new WrapLayout());
+		displayComponent.setBorder(BorderFactory.createLineBorder(Color.black));
 		JButton button = new JButton(this.getName());
 		button.addMouseListener(this);
 		displayComponent.add(button);
 		displayComponent.add(new BoutonAjout("Porte","Ajouter une porte d'embarquement",myporte,displayComponent));
+		displayComponent.revalidate();
+		displayComponent.setSize(269, 75);
 		return displayComponent;
 	}
 }
