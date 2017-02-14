@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import SystemeGestion.Entite;
 import airportComponents.Piste;
 import airportComponents.Porte;
+import airportComponents.Terminal;
 
 
 public class Vol extends Entite implements Comparable<Vol>{
@@ -16,6 +17,7 @@ public class Vol extends Entite implements Comparable<Vol>{
 	private boolean isDepart; 
 	private int nombrePassagers;
 	private IAvion planeType;
+	private Terminal terminal;
 	private Piste piste;
 	private Porte porte;
 	private boolean isOutConstructor = false;
@@ -83,6 +85,13 @@ public class Vol extends Entite implements Comparable<Vol>{
 		setAffected(true);
 		this.piste = piste;
 		this.porte = porte;
+	}
+	
+	public void release(){
+		setEnCours(false);
+		setAffected(false);
+		piste = null;
+		porte = null;
 	}
 	
 	public Piste getPiste() {
@@ -201,5 +210,13 @@ public class Vol extends Entite implements Comparable<Vol>{
 
 	private void setEnCours(boolean isEnCours) {
 		this.isEnCours = isEnCours;
+	}
+	
+	public String getStringType(){
+		if(isDepart){
+			return "aterrissage";
+		}else{
+			return "decollage";
+		}
 	}
 }

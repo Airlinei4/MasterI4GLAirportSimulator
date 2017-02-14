@@ -77,7 +77,14 @@ public abstract class PlaneReceiver extends Structure {
 	}
 	
 	public void release(Vol vol) throws Exception{
-		setVol(vol);
+		if(vol != this.vol){
+			throw new Exception("Le vol "+vol.getName()+" ne peut pas libérer cette ressource");
+		}
+		setVol(null);
+	}
+	
+	public void cancelSimulation() throws Exception{
+		setVol(null);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import planesAndFlights.IAvion;
+import planesAndFlights.Vol;
 
 public class Piste extends PlaneReceiver {
 	
@@ -136,5 +137,11 @@ public class Piste extends PlaneReceiver {
 			throw new Exception("Plane is too heavy for this piste");
 		}
 		return super.addPlaneType(planeType);
+	}
+	
+	@Override
+	public boolean isCompatible(Vol vol) {
+		// TODO Auto-generated method stub
+		return super.isCompatible(vol) && vol.getDepart()==isDecollage;
 	}
 }

@@ -6,31 +6,22 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import SystemeGestion.Entite;
-import airportComponents.Porte;
 import planesAndFlights.IAvion;
 
 public class Formulaire extends JFrame implements ActionListener{
 
 	private ArrayList <JLabel> lbl = new ArrayList<JLabel>();
 
-
-	//private ArrayList<JLabel> 
 	private ArrayList <JTextField> txtF = new ArrayList<JTextField>() ;
-	private ArrayList<Object> data;
 	private ArrayList<Component> listFields;
-	private ComboBoxAvion comboBoxAv;
-	private ComboBoxDepart comboBoxPiste;
 	private int position = 30;
-
-	private Entry<String, String> fieldName;
 
 	public Formulaire(Map<String, String> listChamps, ArrayList<Object> listeValeur, Entite objet){
 		super("Formulaire");
@@ -38,7 +29,6 @@ public class Formulaire extends JFrame implements ActionListener{
 		listFields = new ArrayList<Component>();
 		
 		getContentPane().setLayout(null);
-//		this.setSize(500, 400);
 		this.setLocationRelativeTo(null);
 		
 
@@ -48,10 +38,10 @@ public class Formulaire extends JFrame implements ActionListener{
 
 		while (it.hasNext()){			
 
-			fieldName = it.next();
+			Entry<String, String> fieldName = it.next();
 			//comboBox type de piste
 			if(fieldName.getValue() == "boolean"){
-				comboBoxPiste = new ComboBoxDepart();
+				ComboBoxDepart comboBoxPiste = new ComboBoxDepart();
 				comboBoxPiste.addActionListener(this);
 				comboBoxPiste.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxPiste);
@@ -70,7 +60,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
-				comboBoxAv = new ComboBoxAvion();
+				ComboBoxAvion comboBoxAv = new ComboBoxAvion();
 				comboBoxAv.addActionListener(this);
 				comboBoxAv.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxAv);
@@ -131,7 +121,7 @@ public class Formulaire extends JFrame implements ActionListener{
 		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().setVisible(false);
-				data = new ArrayList<Object>();
+				ArrayList<Object> data = new ArrayList<Object>();
 				
 				for(Component comp : listFields){
 					if(comp instanceof ComboBoxDepart){
@@ -152,8 +142,8 @@ public class Formulaire extends JFrame implements ActionListener{
 				try {
 					objet.setAttributesList(data);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
 				}
 				dispose();
 			}

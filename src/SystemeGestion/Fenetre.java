@@ -124,18 +124,43 @@ public class Fenetre extends JFrame implements ActionListener{
 		Collections.sort(Vols);
 		ArrayList<Date> dates = getEchellesDates();
 		int indexMin = 0;
-		for(Date date : dates){
-			int index = indexMin;
-			while(Vols.get(index).isAffected() || Vols.get(index).compatible(date)||Vols.get(index).isEnCours()){
-				Vol temp = Vols.get(index);
-				if(temp.isAffected()){
-					indexMin = index;
-				}else if (temp.isEnCours()) {
-					if(!temp.compatible(date)){
-						temp.affect(releasePiste(temp), releasePorte(temp));
+		try{
+			for(Date date : dates){
+				int index = indexMin;
+				while(Vols.get(index).isAffected() || Vols.get(index).compatible(date)||Vols.get(index).isEnCours()){
+					Vol temp = Vols.get(index);
+					if(temp.isAffected()){
+						indexMin = index;
+					}else if (temp.isEnCours()) {
+						if(!temp.compatible(date)){
+							temp.affect(releasePiste(temp), releasePorte(temp));
+						}
+					}else{
+						takePiste(temp);
+						takePorte(temp);
 					}
+					verifierCapaciteTerminaux();
 				}
 			}
+		}catch (Exception e) {
+			releaseAllResources();
+			throw e;
+		}
+	}
+	
+	private void takePiste(Vol vol) throws Exception{
+		ArrayList<Piste> listPistes = aeroport.getPistes();
+		int index = 0;
+		while(index<listPistes.size() && !listPistes.get(index).isCompatible(vol)){
+			index++;
+		}
+		if(index == listPistes.size()){
+			throw new Exception("Aucune piste ne peut accueillir le vol "+vol.getName()
+			+"\nVerifiez que l'aeroport contient assez de pistes contenant les criteres suivants : "
+			+"\n-piste pour "+vol.getStringType()
+			+"\n-piste qui supporte le modele "+vol.getPlaneType().getNom());
+		}else{
+			listPistes.get(index).take(vol);
 		}
 	}
 	
@@ -149,6 +174,29 @@ public class Fenetre extends JFrame implements ActionListener{
 			}
 		}
 		return null;
+	}
+	
+	private void takePorte(Vol vol) throws Exception{
+		ArrayList<Terminal> listTerminaux = aeroport.getTerminaux();
+		int indexTerminal = 0;
+		while(indexTerminal<listTerminaux.size()){
+			ArrayList<Porte> listPortes = listTerminaux.get(indexTerminal).getPortes();
+			int indexPortes = 0;
+			while (indexPortes < listPortes.size() && !listPortes.get(indexPortes).isCompatible(vol)) {
+				indexPortes++;	
+			}
+			if(indexPortes < listPortes.size()){
+				listPortes.get(indexPortes).take(vol);
+				indexTerminal = 2*listTerminaux.size();
+			}else{
+				indexTerminal++;
+			}
+		}
+		if(indexTerminal == listTerminaux.size()){
+			throw new Exception("Aucune porte ne peut accueillir le vol "+vol.getName()
+			+"\nVerifiez que l'aeroport contient assez de portes pouvant accueillir le modele "
+			+ ""+vol.getPlaneType().getNom());
+		}
 	}
 	
 	private Porte releasePorte(Vol vol) throws Exception{
@@ -171,5 +219,27 @@ public class Fenetre extends JFrame implements ActionListener{
 			}
 		}
 		return dates;
+	}
+	
+	private void verifierCapaciteTerminaux() throws Exception{
+		for(Terminal terminal : aeroport.getTerminaux()){
+			if(terminal.isCapacityOver()){
+				throw new Exception("La capacite du terminal "+terminal.getName()+" est depassee");
+			}
+		}
+	}
+	
+	private void releaseAllResources() throws Exception{
+		for(Vol vol : Vols){
+			vol.release();
+		}
+		for(Terminal terminal : aeroport.getTerminaux()){
+			for(Porte porte : terminal.getPortes()){
+				porte.cancelSimulation();
+			}
+		}
+		for(Piste piste : aeroport.getPistes()){
+			piste.cancelSimulation();
+		}
 	}
 }
