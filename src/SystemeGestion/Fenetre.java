@@ -16,6 +16,8 @@ import planesAndFlights.Vol;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -96,7 +98,19 @@ public class Fenetre extends JFrame implements ActionListener{
 		//On ajoute le bouton SIMULER	
 		Simuler = new JButton(" SIMULER", new ImageIcon("images/process_icon.png"));
 		Simuler.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-		Simuler.addActionListener(this);
+		Simuler.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					simuler();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur de simulation",
+                            JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 		Simuler.setBounds((int) (getSize().getWidth()-300), (int) getSize().getHeight()-110, 270, 60);
 		buttonsPanel.add(Simuler);
 
@@ -121,6 +135,25 @@ public class Fenetre extends JFrame implements ActionListener{
 	}
 	
 	public void simuler() throws Exception{
+		if(aeroport.getTerminaux().isEmpty()){
+			throw new Exception("Aucun terminal n'a ete defini");
+		}else{
+			ArrayList<Terminal> listTerminaux = aeroport.getTerminaux();
+			int index = 0;
+			while (index < listTerminaux.size() && listTerminaux.get(index).getPortes().isEmpty()) {
+				index++;
+				
+			}
+			if(index == listTerminaux.size()){
+				throw new Exception("Aucune porte n'a ete definie");
+			}
+		}
+		if(aeroport.getPistes().isEmpty()){
+			throw new Exception("Aucune piste n'a été definie");
+		}
+		if(Vols.isEmpty()){
+			throw new Exception("Aucune vol n'a été defini");
+		}
 		Collections.sort(Vols);
 		ArrayList<Date> dates = getEchellesDates();
 		int indexMin = 0;
@@ -133,7 +166,8 @@ public class Fenetre extends JFrame implements ActionListener{
 						indexMin = index;
 					}else if (temp.isEnCours()) {
 						if(!temp.compatible(date)){
-							temp.affect(releasePiste(temp), releasePorte(temp));
+							Porte porte = releasePorte(temp);
+							temp.affect(releasePiste(temp), porte, getTerminal(porte));
 						}
 					}else{
 						takePiste(temp);
@@ -206,6 +240,15 @@ public class Fenetre extends JFrame implements ActionListener{
 					porte.release(vol);
 					return porte;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private Terminal getTerminal(Porte porte){
+		for(Terminal term : aeroport.getTerminaux()){
+			if(term.getPortes().contains(porte)){
+				return term;
 			}
 		}
 		return null;

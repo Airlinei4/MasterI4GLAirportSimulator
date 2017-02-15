@@ -81,9 +81,6 @@ public class Piste extends PlaneReceiver {
 		}else{
 			throw new Exception("La reponse pour le decollage n'est pas de type Booleen");
 		}
-		for(int i=0; i<4; i++){
-			newList.remove(i);
-		}
 	}
 	
 	public int getLargeurMaximale(){

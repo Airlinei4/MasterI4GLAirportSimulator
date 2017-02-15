@@ -80,11 +80,12 @@ public class Vol extends Entite implements Comparable<Vol>{
 		}
 	}
 	
-	public void affect(Piste piste, Porte porte){
+	public void affect(Piste piste, Porte porte, Terminal terminal){
 		setEnCours(false);
 		setAffected(true);
 		this.piste = piste;
 		this.porte = porte;
+		this.terminal = terminal;
 	}
 	
 	public void release(){
@@ -92,22 +93,15 @@ public class Vol extends Entite implements Comparable<Vol>{
 		setAffected(false);
 		piste = null;
 		porte = null;
+		terminal = null;
 	}
 	
 	public Piste getPiste() {
 		return piste;
 	}
 	
-	public void setPiste(Piste piste) {
-		this.piste = piste;
-	}
-	
 	public Porte getPorte() {
 		return porte;
-	}
-	
-	public void setPorte(Porte porte) {
-		this.porte = porte;
 	}
 
 	@Override
@@ -218,5 +212,9 @@ public class Vol extends Entite implements Comparable<Vol>{
 		}else{
 			return "decollage";
 		}
+	}
+
+	public Terminal getTerminal() {
+		return terminal;
 	}
 }

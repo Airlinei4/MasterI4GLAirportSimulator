@@ -55,7 +55,9 @@ public abstract class Entite  implements MouseListener{
 		}else{
 			throw new Exception("name in list isn't String");
 		}
-		button.setName(name);
+		if(button != null){
+			button.setName(name);
+		}
 	}
 	
 	public JPanel getDisplay(){
