@@ -38,18 +38,22 @@ public class BoutonAjout extends JButton implements MouseListener{
 			Piste elmt = new Piste("Piste "+compteur);
 			liste.add(elmt);
 			ZoneAffichage.add(elmt.getDisplay());
+			elmt.setListe(liste);
 		}else if(this.class_name == "Vol"){	
 			Vol elmt = new Vol("Vol "+compteur);
 			liste.add(elmt);
 			ZoneAffichage.add(elmt.getDisplay());
+			elmt.setListe(liste);
 		}else if(this.class_name == "Terminal"){	
 			Terminal elmt = new Terminal("Terminal "+compteur);
 			liste.add(elmt);
 			ZoneAffichage.add(elmt.getDisplay());
+			elmt.setListe(liste);
 		}else if(this.class_name == "Porte"){	
 			Porte elmt = new Porte("Porte "+compteur);
 			liste.add(elmt);
 			ZoneAffichage.add(elmt.getDisplay());
+			elmt.setListe(liste);
 		}
 		ZoneAffichage.revalidate();
 	}

@@ -1,4 +1,6 @@
 package SystemeGestion;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -7,18 +9,36 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import Forms.Formulaire;
 
-public abstract class Entite  implements MouseListener{
+public abstract class Entite  implements MouseListener, ActionListener{
 	private String name;
 	protected JPanel displayComponent;
 	private JButton button;
+	JPopupMenu menu;
 
 	public Entite(String name) {
 		this.name = name;
+		menu = new JPopupMenu();
+    	JMenuItem boutonSupprimer = new JMenuItem("Supprimer");
+		boutonSupprimer.addActionListener(this);
+    	menu.add(boutonSupprimer);
 		ouvrirFormulaire();
+	}
+	
+	public void supprimer(){
+		displayComponent.setVisible(false);
+		colection.remove(this);
+	}
+	
+	private ArrayList colection;
+	
+	public void setListe(ArrayList liste){
+		colection = liste; 
 	}
 	
 	public String getName() {
@@ -68,9 +88,26 @@ public abstract class Entite  implements MouseListener{
 		return displayComponent;
 	}
 	
+	public void mousePressed(MouseEvent evt) {
+	    if (evt.isPopupTrigger()) {
+          menu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }else{
+        	ouvrirFormulaire();
+		}
+	}
+
+	public void mouseReleased(MouseEvent evt) {
+		if (evt.isPopupTrigger()) {
+          menu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+	}
+	
+	
+    public void actionPerformed(ActionEvent e) {
+           this.supprimer();
+    }
 
 	public void mouseClicked(MouseEvent arg0) {
-		ouvrirFormulaire();
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
@@ -79,16 +116,6 @@ public abstract class Entite  implements MouseListener{
 	}
 
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
