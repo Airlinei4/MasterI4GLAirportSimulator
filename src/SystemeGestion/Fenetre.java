@@ -180,7 +180,7 @@ public class Fenetre extends JFrame implements ActionListener{
 		try{
 			for(Date date : dates){
 				int index = indexMin;
-				while(Vols.get(index).isAffected() || Vols.get(index).compatible(date)||Vols.get(index).isEnCours()){
+				while((index<Vols.size())&&(Vols.get(index).isAffected() || Vols.get(index).compatible(date)||Vols.get(index).isEnCours())){
 					Vol temp = Vols.get(index);
 					if(temp.isAffected()){
 						indexMin = index;
@@ -188,11 +188,12 @@ public class Fenetre extends JFrame implements ActionListener{
 						if(!temp.compatible(date)){
 							Porte porte = releasePorte(temp);
 							temp.affect(releasePiste(temp), porte, getTerminal(porte));
+						}else{
+							takePiste(temp);
+							takePorte(temp);
 						}
-					}else{
-						takePiste(temp);
-						takePorte(temp);
 					}
+					index++;
 					verifierCapaciteTerminaux();
 				}
 			}
