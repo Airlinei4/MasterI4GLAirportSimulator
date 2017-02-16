@@ -12,13 +12,17 @@ public class ComboBoxDepart extends JComboBox<String> {
 	private String arrivee = "Arrivee";
 	
 
-	public ComboBoxDepart() {
+	public ComboBoxDepart(boolean value) {
 		addItem(depart);
 		addItem(arrivee);
+		if(value){
+			setSelectedItem(depart);
+		}else{
+			setSelectedItem(arrivee);
+		}
 	}
 	
-	@Override
-	public Boolean getSelectedItem() {
+	public Boolean getChoice() {
 		String nomSelect = super.getSelectedItem().toString();
 		if(nomSelect.equals(depart)){
 			return true;

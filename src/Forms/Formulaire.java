@@ -41,7 +41,7 @@ public class Formulaire extends JFrame implements ActionListener{
 			Entry<String, String> fieldName = it.next();
 			//comboBox type de piste
 			if(fieldName.getValue() == "boolean"){
-				ComboBoxDepart comboBoxPiste = new ComboBoxDepart();
+				ComboBoxDepart comboBoxPiste = new ComboBoxDepart((boolean) listeValeur.get(indexValeurs));
 				comboBoxPiste.addActionListener(this);
 				comboBoxPiste.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxPiste);
@@ -49,7 +49,6 @@ public class Formulaire extends JFrame implements ActionListener{
 
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
-				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 			}
 
@@ -60,7 +59,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
-				ComboBoxAvion comboBoxAv = new ComboBoxAvion();
+				ComboBoxAvion comboBoxAv = new ComboBoxAvion((IAvion) listeValeur.get(indexValeurs));
 				comboBoxAv.addActionListener(this);
 				comboBoxAv.setBounds(189, position, 86, 20);
 				getContentPane().add(comboBoxAv);
@@ -94,7 +93,7 @@ public class Formulaire extends JFrame implements ActionListener{
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 20);
 				getContentPane().add(lbl.get(lbl.size()-1));
 				
-				ChampDate champDate = new ChampDate();
+				ChampDate champDate = new ChampDate((Date) listeValeur.get(indexValeurs));
 				champDate.setLocation(189, position);
 				getContentPane().add(champDate);
 				listFields.add(champDate);
@@ -104,7 +103,6 @@ public class Formulaire extends JFrame implements ActionListener{
 			else {
 				lbl.add(new JLabel(fieldName.getKey()));
 				lbl.get(lbl.size()-1).setBounds(10, position , 152, 30);
-				System.out.println(fieldName.getKey()+": "+position);
 				getContentPane().add(lbl.get(lbl.size()-1));
 
 				txtF.add(new JTextField((String) listeValeur.get(indexValeurs)));
@@ -119,13 +117,14 @@ public class Formulaire extends JFrame implements ActionListener{
 		}
 		
 		btnFinish.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().setVisible(false);
 				ArrayList<Object> data = new ArrayList<Object>();
 				
 				for(Component comp : listFields){
 					if(comp instanceof ComboBoxDepart){
-						data.add(((ComboBoxDepart) comp).getSelectedItem());
+						data.add(((ComboBoxDepart) comp).getChoice());
 					}else if (comp instanceof ComboBoxAvion){
 						data.add(((ComboBoxAvion) comp).getSelectedItem());
 					}else if (comp instanceof ChampListAvion) {

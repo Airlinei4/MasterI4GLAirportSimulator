@@ -1,6 +1,5 @@
 package Forms;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -18,9 +17,16 @@ public class ComboBoxAvion extends JComboBox<String> {
 		}
 	}
 	
+	public ComboBoxAvion(IAvion oldAvion){
+		listAvion = Fenetre.getAvions();
+		for(IAvion avion : listAvion){
+			addItem(avion.getNom());
+		}
+		setSelectedItem(oldAvion.getNom());
+	}
+	
 	@Override
 	public IAvion getSelectedItem() {
-		// TODO Auto-generated method stub
 		String nomSelect = super.getSelectedItem().toString();
 		for(IAvion avion : listAvion){
 			if(nomSelect.equals(avion.getNom())){

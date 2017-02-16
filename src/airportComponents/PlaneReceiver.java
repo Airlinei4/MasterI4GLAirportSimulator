@@ -47,13 +47,13 @@ public abstract class PlaneReceiver extends Structure {
 	}
 	
 	protected void setPlaneTypes(ArrayList<IAvion> planeTypes) throws Exception {
-		for(IAvion avion : planeTypes){
-			addPlaneType(avion);
-		}
+		this.planeTypes = planeTypes;
 	}
 
-	public boolean addPlaneType(IAvion planeType) throws Exception{
-		return planeTypes.add(planeType);
+	public void addPlaneType(IAvion planeType) throws Exception{
+		if(!planeTypes.contains(planeType)){
+			planeTypes.add(planeType);
+		}
 	}
 	
 	public boolean removePlaneType(IAvion planeType){
@@ -66,7 +66,7 @@ public abstract class PlaneReceiver extends Structure {
 	
 	public boolean isCompatible(Vol vol){
 		//check plane type and if structure isn't busy
-		return isPlaneTypeSupported(vol.getPlaneType()) && (vol == null);
+		return isPlaneTypeSupported(vol.getPlaneType()) && (this.vol == null);
 	}
 	
 	public void take(Vol vol) throws Exception{

@@ -126,14 +126,14 @@ public class Piste extends PlaneReceiver {
 	}
 	
 	@Override
-	public boolean addPlaneType(IAvion planeType) throws Exception {
+	public void addPlaneType(IAvion planeType) throws Exception {
 		if(planeType.getLargeur() > largeurMaximale){
 			throw new Exception("Plane is too large for this piste");
 		}
 		if(planeType.getPoids() > poidsMaximal){
 			throw new Exception("Plane is too heavy for this piste");
 		}
-		return super.addPlaneType(planeType);
+		super.addPlaneType(planeType);
 	}
 	
 	@Override

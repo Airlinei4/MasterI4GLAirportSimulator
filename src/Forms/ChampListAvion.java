@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import planesAndFlights.IAvion;
 
@@ -76,16 +77,11 @@ public class ChampListAvion extends Container {
 		btnRem.setBounds(list_1.getX()+list_1.getWidth()+10, list_1.getY(), 45, 20);
 		btnRem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String[] nomsAvion = (String[]) list_1.getSelectedValues();
-				for(String nom : nomsAvion){
-					if(blocAvion.contains(nom)){
-						int indexAvion = 0;
-						while(!blocAvion.get(indexAvion).equalsIgnoreCase(nom) && indexAvion<blocAvion.size()){
-							indexAvion++;
-						}
-						blocAvion.remove(indexAvion);
-						listAvion.remove(indexAvion);
-					}
+				int indexAvion = list_1.getSelectedIndex();
+				if(indexAvion != -1){
+					blocAvion.remove(indexAvion);
+					listAvion.remove(indexAvion);
+					list_1.setModel(blocAvion);
 				}
 			}
 		});

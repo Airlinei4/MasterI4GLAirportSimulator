@@ -37,11 +37,11 @@ public class Porte extends PlaneReceiver {
 	}
 
 	@Override
-	public boolean addPlaneType(IAvion planeType) throws Exception {
+	public void addPlaneType(IAvion planeType) throws Exception {
 		if(planeType.getLargeur() > largeurMax){
 			throw new Exception("L'avion est trop large pour la porte");
 		}
-		return super.addPlaneType(planeType);
+		super.addPlaneType(planeType);
 	}
 	
 	@Override

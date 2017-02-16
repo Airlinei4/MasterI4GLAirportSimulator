@@ -17,10 +17,10 @@ public class ChampDate extends Container {
 	private JComboBox<Integer> heure;
 	private JComboBox<Integer> minute;
 	
-	public ChampDate() {
-		createDatePicker();
-		createHeure();
-		createMinute();
+	public ChampDate(Date date) {
+		createDatePicker(date);
+		createHeure(date);
+		createMinute(date);
 		
 		setSize(computeWidth(), computeHeight());
 		setVisible(true);
@@ -41,8 +41,8 @@ public class ChampDate extends Container {
 		return datePicker.getX()*2+datePicker.getHeight();
 	}
 	
-	private void createDatePicker(){
-		UtilDateModel model = new UtilDateModel();
+	private void createDatePicker(Date date){
+		UtilDateModel model = new UtilDateModel(date);
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -53,20 +53,22 @@ public class ChampDate extends Container {
 		this.add(datePicker);
 	}
 	
-	private void createHeure(){
+	private void createHeure(Date date){
 		heure = new JComboBox<Integer>();
 		for(int i= 0; i<24; i++){
 			heure.addItem(i);
 		}
+		heure.setSelectedItem(date.getHours());
 		heure.setBounds(datePicker.getX()*2+datePicker.getWidth(), datePicker.getY(), 50, 20);
 		add(heure);
 	}
 	
-	private void createMinute(){
+	private void createMinute(Date date){
 		minute = new JComboBox<Integer>();
 		for(int i= 0; i<60; i=i+10){
 			minute.addItem(i);
 		}
+		minute.setSelectedItem(Math.round(date.getMinutes()/10.0)*10);
 		minute.setBounds(heure.getX()+heure.getWidth()+datePicker.getX(), datePicker.getY(), 50, 20);
 		add(minute);
 	}

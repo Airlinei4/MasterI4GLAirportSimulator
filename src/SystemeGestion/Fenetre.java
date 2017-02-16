@@ -174,6 +174,7 @@ public class Fenetre extends JFrame implements ActionListener{
 		if(Vols.isEmpty()){
 			throw new Exception("Aucune vol n'a été defini");
 		}
+		releaseAllResources();
 		Collections.sort(Vols);
 		ArrayList<Date> dates = getEchellesDates();
 		int indexMin = 0;
@@ -201,6 +202,8 @@ public class Fenetre extends JFrame implements ActionListener{
 			releaseAllResources();
 			throw e;
 		}
+		JOptionPane.showMessageDialog(null, "La simulation a reussie", "Simulation reussie",
+                JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private void takePiste(Vol vol) throws Exception{
