@@ -8,7 +8,7 @@ import planesAndFlights.Ville;
 public class Aeroport extends Structure {
 	private ArrayList<Piste> pistes;
 	private ArrayList<Terminal> terminaux;
-	private ArrayList<IVille> villes;
+	private ArrayList<IVille> villes; // essai de com
 
 	public Aeroport(String name) {
 		super(name);
